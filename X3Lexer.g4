@@ -29,7 +29,6 @@ EQ : '==' ;
 NEQ : '!=' ;
 AND : '&' ;
 OR : '|' ;
-EQ : '=' ;
 MOD : '%' ;
 TIMES : '*' ;
 PLUS : '+' ;
@@ -64,8 +63,8 @@ M_COMMENT : '`' ~[`\']* (M_COMMENT ~[`\']*)* '\'' -> skip ;
 
 
 // Identifiers
-TYPE_IDENTIFIER : [A-Z] [A-Za-z0-9\_]* ;
-NAME : [a-z] [A-Za-z0-9\_]* ;
+TNAME : [A-Z] [A-Za-z0-9\_]* ;
+VNAME : [a-z] [A-Za-z0-9\_]* ;
 
 // Whitespace
 WS : [ \t\n\r] -> skip ;
