@@ -16,17 +16,16 @@ vname_lst_typed : LPAREN RPAREN
                 | LPAREN typed_var (COMMA typed_var)* RPAREN
                 ;
 
-sigma : tname_list_optional vname_lst_typed COLON type ;
+sigma : tname_lst_optional vname_lst_typed COLON type ;
 
 type : TNAME
-     | TNAME LANGLE RANGLE
-     | TNAME LANGLE type_lst RANGLE
+     | TNAME type_lst_optional
      | type AND type
      | BOTTOM
      | TOP
      ;
 
-func_call : VNAME type_lst expr_lst ;
+func_call : VNAME type_lst_optional expr_lst ;
 
 list_literal : LSQBRACKET RSQBRACKET 
              | LSQBRACKET expr (COMMA expr)* RSQBRACKET
@@ -76,26 +75,29 @@ stmt : LCURLY stmt* RCURLY
      ;
 
 fun_impl : FUN VNAME sigma stmt 
-         | FUN VNAME sigma EQUALS expr ;
+         | FUN VNAME sigma EQUALS expr SEMICOLON
+         ;
 
 fun_decl : FUN VNAME sigma SEMICOLON
          | fun_impl
          ;
 
-interface : INTERFACE TNAME tname_lst EXTENDS type interface_impl
-          | INTERFACE TNAME tname_lst interface_impl
+lnterface : INTERFACE TNAME tname_lst_optional EXTENDS type interface_impl
+          | INTERFACE TNAME tname_lst_optional interface_impl
           ;
 
-class : CLASS TNAME tname_lst_optional vname_lst_typed (EXTENDS type)? class_impl
+clazz: CLASS TNAME tname_lst_optional vname_lst_typed (EXTENDS type)? class_impl
       ;
 
 interface_impl : LCURLY fun_decl* RCURLY ;
 
-class_impl : LCURLY stmt* (SUPER expr_lst)? SEMICOLON fun_decl* RCURLY
+class_impl : LCURLY stmt* (SUPER expr_lst)? SEMICOLON fun_decl* RCURLY ;
 
 program : stmt 
-        | stmt* program 
-        | (fun_impl)* program 
-        | interface program 
-        | class program
+        | stmt program 
+        | fun_impl program 
+        | lnterface program 
+        | clazz program
         ;
+
+input : program EOF ;

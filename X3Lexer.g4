@@ -1,4 +1,4 @@
-lexer grammar X3Lex ;
+lexer grammar X3Lexer ;
 
 // Syntactic Artifacts
 LPAREN : '(' ;
@@ -13,6 +13,8 @@ COMMA : ',' ;
 DOT : '.' ;
 ASSIGN : ':=' ;
 SEMICOLON : ';' ;
+COLON : ':' ;
+EQUALS : '=' ;
 
 // Operators
 BANG : '!' ;
@@ -49,8 +51,8 @@ INTERFACE : 'interface' ;
 EXTENDS : 'extends' ;
 FUN : 'fun' ;
 SUPER : 'super' ;
-THING : 'Thing' ;
-NOTHING : 'Nothing' ;
+TOP : 'Thing' ;
+BOTTOM : 'Nothing' ;
 CLASS : 'class' ; 
 
 

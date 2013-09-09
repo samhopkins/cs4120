@@ -1,0 +1,11 @@
+class Foo<T>(x : Iterable) extends Bar<T> {
+  foo := x ++ [2];
+  super();
+
+  fun getX() : T = x;
+  fun getX2() : T {
+    return x;
+  }
+
+  fun getY() : T = x.y<T>(y) ;
+}
