@@ -1,4 +1,4 @@
-lexer grammar X3Lex ;
+lexer grammar X3Lexer ;
 
 // Syntactic Artifacts
 LPAREN : '(' ;
@@ -13,6 +13,7 @@ COMMA : ',' ;
 DOT : '.' ;
 ASSIGN : ':=' ;
 SEMICOLON : ';' ;
+COLON : ':' ;
 
 // Operators
 BANG : '!' ;
@@ -58,11 +59,12 @@ INT : [0-9]+ ;
 STRING : '\"' ~[\t\r\n]*? '\"' ;
 
 // Comments
-S_COMMENT : '##' .*? [\n\r] -> skip ;
+S_COMMENT : '#' .*? [\n\r] -> skip ;
 M_COMMENT : '`' ~[`\']* (M_COMMENT ~[`\']*)* '\'' -> skip ;
 
 
 // Identifiers
+TVAR : [A-Z] ;
 TNAME : [A-Z] [A-Za-z0-9\_]* ;
 VNAME : [a-z] [A-Za-z0-9\_]* ;
 

@@ -2,22 +2,47 @@ parser grammar X3Parser ;
 
 options { tokenVocab = X3Lexer; }
 
-arglst : LPAREN RPAREN
-       | LPAREN expr (COMMA expr)* RPAREN
-       ;
+expr_lst : LPAREN RPAREN
+         | LPAREN expr (COMMA expr)* RPAREN
+         ;
 
-call : VNAME LANGLE RANGLE arglst
-     | VNAME arglst
-     | VNAME LANGLE TNAME (COMMA TNAME)* RANGLE arglst
-     ;
+tname_lst : LANGLE RANGLE
+          | LANGLE TNAME (COMMA TNAME)* RANGLE
+          ;
+
+tvar_lst : LANGLE RANGLE
+         | LANGLE TVAR (COMMA TVAR)* RANGLE
+         ;
+
+tau : TVAR 
+    | TNAME tau_lst? 
+    | tau AND tau 
+    | THING 
+    | NOTHING
+    ;
+
+tau_lst : LANGLE RANGLE
+        | LANGLE tau (COMMA tau)* RANGLE
+        ;
+
+gamma : LPAREN RPAREN
+      | LPAREN VNAME COLON tau (COMMA VNAME COLON tau)* RPAREN
+      ;
+
+sigma : tname_lst? gamma COLON tau ;
+
+func_call : VNAME tau_lst? expr_lst ;
+
+constructor_call : TNAME tau_lst? expr_lst ;
 
 list_literal : LSQBRACKET RSQBRACKET 
              | LSQBRACKET expr (COMMA expr)* RSQBRACKET
              ;
       
 expr : VNAME
-     | call
-     | expr DOT call
+     | func_call
+     | expr DOT func_call
+     | constructor_call
      | list_literal
      | expr APPEND expr
      | TRUE
@@ -28,6 +53,8 @@ expr : VNAME
      | MINUS expr
      | expr TIMES expr
      | expr DIVIDE expr
+     | expr MINUS expr
+     | expr PLUS expr
      | expr MOD expr
      | expr ONWARDS
      | expr NONWARDS
@@ -58,26 +85,27 @@ stmt : LCURLY stmt* RCURLY
      | RETURN expr SEMICOLON
      ;
 
-tvar_lst : LBRACKET RBRACKET
-         | LBRACKET TNAME RBRACKET 
-         | LBRACKET TNAME (COMMA TNAME)* RBRACKET
-         ;
+interfaze : INTERFACE TNAME tvar_lst? (EXTENDS tau)? interface_impl ;
 
-interface : INTERFACE TNAME tvar_lst EXTENDS TNAME ifc_impl
-          | INTERFACE TNAME EXTENDS TNAME ifc_impl
-          | INTERFACE TNAME tvar_lst ifc_impl
-          | INTERFACE TNAME ifc_impl
-          ;
+clazz : CLASS TNAME tvar_lst? gamma (EXTENDS tau)? class_impl ;
 
-class : CLASS TNAME sigma EXTENDS TNAME 
+interface_impl : LCURLY (fun_decl)* RCURLY ;
 
-ifc_impl : LCURLY (fun_decl)* RCURLY ;
+class_impl : LCURLY stmt* (SUPER expr_lst SEMICOLON)? fun_decl* RCURLY ;
 
-sigma : tvar_lst arglst COLON TNAME 
-      | arglst COLON TNAME ;
+toplevel_fun : FUN VNAME sigma stmt SEMICOLON ;
 
 fun_decl : FUN VNAME sigma fun_impl_or_semi ;
 
 fun_impl_or_semi : stmt
                  | SEMICOLON
                  ;
+
+program : stmt
+        | stmt program
+        | toplevel_fun program
+        | interfaze program
+        | clazz program
+        ; 
+
+input : program EOF ;
