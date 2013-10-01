@@ -34,8 +34,8 @@ tau returns [X3Type t]
 tau_lst returns [List<X3Type> lst]
         : LANGLE RANGLE { $lst = new ArrayList<X3Type>(); }
         | { $lst = new ArrayList<X3Type>(); } 
-          LANGLE t1=tau { $list.add($t1.t); } 
-          (COMMA t2=tau { $list.add($t2.t); })* RANGLE
+          LANGLE t1=tau { $lst.add($t1.t); } 
+          (COMMA t2=tau { $lst.add($t2.t); })* RANGLE
         ;
 
 gamma returns [X3Context ctxt]
@@ -43,9 +43,9 @@ gamma returns [X3Context ctxt]
       | { $ctxt = new X3Context(); }
          LPAREN v=VNAME COLON t=tau 
          { $ctxt = new X3Context();
-           $ctxt = $ctxt.add(new X3Variable($v.text), $t.t) }
+           $ctxt = $ctxt.add(new X3Variable($v.text), $t.t); }
          (COMMA v=VNAME COLON t=tau
-         { $ctxt = $ctxt.add(new X3Variable($v.text), $t.t) })* RPAREN
+         { $ctxt = $ctxt.add(new X3Variable($v.text), $t.t); })* RPAREN
       ;
 
 sigma returns [X3TypeScheme s]
@@ -126,13 +126,13 @@ expr returns [X3Expression e]
 
      | e1=expr ONWARDS
        { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
-         args.add(new X3Boolean(true);
+         args.add(new X3BooleanExpression(true));
          $e = new X3MethodCallExpression(new X3Variable("onwards"), args,
             new ArrayList<X3Type>(), $e1.e); }
 
      | e1=expr NONWARDS
        { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
-         args.add(new X3Boolean(false);
+         args.add(new X3BooleanExpression(false));
          $e = new X3MethodCallExpression(new X3Variable("onwards"), args,
             new ArrayList<X3Type>(), $e1.e); }
 
@@ -232,7 +232,7 @@ if_stmt returns [X3IfStatement s]
           IF LPAREN e1=expr RPAREN sif=stmt 
           { $s.test = $e1.e; 
             $s.ifBranch = $sif.s; }
-          (ELSE selse=stmtt
+          (ELSE selse=stmt
            { $s.elseBranch = $selse.s; } )?
         ;
 
@@ -298,4 +298,4 @@ program returns [X3Program p]
                                  $p.lst.addAll($p1.p.lst);}
         ; 
 
-input returns [X3Program p] : p1=program EOF { $p = $p1.p };
+input returns [X3Program p] : p1=program EOF { $p = $p1.p; };
