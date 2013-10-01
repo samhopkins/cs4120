@@ -1,0 +1,12 @@
+X3Lexer.java
+X3Parser.java
+*.tokens
+*.class
+*.swp
+*Lexer.java
+*Parser.java
+*Listener.java
+*.zip
+*.pdf
+xi/*
+*.html
