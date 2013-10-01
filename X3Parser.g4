@@ -256,21 +256,30 @@ interfaze returns [X3Interface i]
             { $i.name = new X3TypeName(t.text); }
             (tlst=tvar_lst { $i.typeParamters = $tlst.lst; })? 
             (EXTENDS t1=tau { $i.superClass = $t1.t; })? 
-            fns=interface_impl { $i.functions = $fns.lst; };
+            mthds=interface_impl { $i.methods = $mthds.lst; };
 
 clazz : CLASS TNAME tvar_lst? gamma (EXTENDS tau)? class_impl ;
 
-interface_impl : LCURLY (fun_decl)* RCURLY ;
+interface_impl returns [List<X3Method> lst]
+               : { $lst = new ArrayList<X3Method>(); }
+                 LCURLY (mthd=mthd_decl { $lst.append($mthd.m); })* RCURLY ;
 
-class_impl : LCURLY stmt* (SUPER expr_lst SEMICOLON)? fun_decl* RCURLY ;
+class_impl returns [X3Class c]
+           : { $c = new X3Class(); 
+               X3Constructor cstrct = new X3Constructor(); }
+             LCURLY (st=stmt { cstrct.body.append($st.s); })* 
+             (SUPER elst=expr_lst SEMICOLON { cstrct.superCallArguments =
+             $elst.lst; })? 
+             (mthd=mthd_decl { $c.methods.append($mthd.m); }* RCURLY ;
 
 toplevel_fun : FUN VNAME sigma stmt SEMICOLON ;
 
-fun_decl : FUN VNAME sigma fun_impl_or_semi ;
-
-fun_impl_or_semi : stmt
-                 | SEMICOLON
-                 ;
+mthd_decl returns [X3Method m]
+          : FUN v=VNAME sig=sigma body=stmt
+            { $m = new X3MethodImpl(new X3Variable($v.text), $sig.s, $body.s); }
+          | FUN v=VNAME sig=sigma SEMICOLON 
+            { $m = new X3MethodDecl(new X3Variable($v.text), $sig.s); }
+          ;
 
 program : stmt
         | stmt program
