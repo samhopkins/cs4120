@@ -1,14 +1,14 @@
-public class X3Interface {
+public class X3Interface extends X3ToplevelItem {
   public X3TypeName name;
   public List<X3TypeVariable> typeParameters;
-  public X3Type superClass;
+  public X3Type superType;
   public List<X3Method> methods;
 
   public X3Interface(X3TypeName name, List<X3TypeVariable> typeParameters,
-      X3Type superClass, List<Method> methods) {
+      X3Type superType, List<Method> methods) {
     this.name = name;
     this.typeParameters = typeParameters;
-    this.superClass = superClass;
+    this.superType = superType;
     this.methods = methods;
   }
 

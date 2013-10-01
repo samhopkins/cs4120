@@ -255,24 +255,29 @@ interfaze returns [X3Interface i]
             INTERFACE t=TNAME 
             { $i.name = new X3TypeName(t.text); }
             (tlst=tvar_lst { $i.typeParamters = $tlst.lst; })? 
-            (EXTENDS t1=tau { $i.superClass = $t1.t; })? 
+            (EXTENDS t1=tau { $i.superType = $t1.t; })? 
             mthds=interface_impl { $i.methods = $mthds.lst; };
 
-clazz : CLASS TNAME tvar_lst? gamma (EXTENDS tau)? class_impl ;
+clazz returns [X3Class c]
+      : { $c = new X3Class(); 
+          X3Constructor cstruct = new X3Constructor(); 
+          $c.constructor = cstruct; }
+        CLASS t=TNAME { $c.name = new X3TypeName($t.text); }
+        (tlst=tvar_lst { $c.typeParamters = $tlst.lst; })? g=gamma 
+        { $c.context = $g.ctxt; }
+        (EXTENDS t1=tau { $c.superType = $t1.t; })? 
+        LCURLY (st=stmt { cstruct.body.append($st.s); })* 
+        (SUPER elst=expr_lst SEMICOLON { cstruct.superCallArguments =
+        $elst.lst; })? 
+        (mthd=mthd_decl { $c.methods.append($mthd.m); })* RCURLY ;
 
 interface_impl returns [List<X3Method> lst]
-               : { $lst = new ArrayList<X3Method>(); }
-                 LCURLY (mthd=mthd_decl { $lst.append($mthd.m); })* RCURLY ;
-
-class_impl returns [X3Class c]
-           : { $c = new X3Class(); 
-               X3Constructor cstrct = new X3Constructor(); }
-             LCURLY (st=stmt { cstrct.body.append($st.s); })* 
-             (SUPER elst=expr_lst SEMICOLON { cstrct.superCallArguments =
-             $elst.lst; })? 
-             (mthd=mthd_decl { $c.methods.append($mthd.m); }* RCURLY ;
-
-toplevel_fun : FUN VNAME sigma stmt SEMICOLON ;
+               : { $lst = new ArrayList<X3Method>(); } LCURLY (mthd=mthd_decl { $lst.append($mthd.m); })* RCURLY ; 
+toplevel_fun returns [X3ToplevelFunction f]
+             : FUN v=VNAME sig=sigma st=stmt SEMICOLON 
+               { $f = new X3ToplevelFunction(new X3Variable($v.text), $sig.s,
+                 $st.s); }
+             ;
 
 mthd_decl returns [X3Method m]
           : FUN v=VNAME sig=sigma body=stmt
@@ -281,11 +286,16 @@ mthd_decl returns [X3Method m]
             { $m = new X3MethodDecl(new X3Variable($v.text), $sig.s); }
           ;
 
-program : stmt
-        | stmt program
-        | toplevel_fun program
-        | interfaze program
-        | clazz program
+program returns [X3Program p]
+        : s1=stmt { $p = new X3Program(); $p.lst.append($s1.s); }
+        | s1=stmt p1=program { $p = new X3Program(); $p.lst.append($s1.s);
+                               $p.lst.addAll($p1.p.lst);}
+        | t1=toplevel_fun p1=program  { $p = new X3Program(); $p.lst.append($t1.f);
+                                        $p.lst.addAll($p1.p.lst);}
+        | i1=interfaze p1=program  { $p = new X3Program(); $p.lst.append($i1.i);
+                                     $p.lst.addAll($p1.p.lst);}
+        | c1=clazz p1=program  { $p = new X3Program(); $p.lst.append($c1.c);
+                                 $p.lst.addAll($p1.p.lst);}
         ; 
 
-input : program EOF ;
+input returns [X3Program p] : p1=program EOF { $p = $p1.p };

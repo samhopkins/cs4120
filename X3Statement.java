@@ -1,3 +1,3 @@
-public abstract class X3Statement {
+public abstract class X3Statement extends X3ToplevelItem {
 
 }
