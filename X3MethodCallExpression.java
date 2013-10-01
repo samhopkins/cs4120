@@ -9,7 +9,8 @@ public class X3MethodCallExpression extends X3FunctionCallExpression {
     this.target = target;
   }
 
-  public static X3FunctionCallExpressionToX3MethodCallExpression(X3Expression
+  public static X3MethodCallExpression 
+      X3FunctionCallExpressionToX3MethodCallExpression(X3Expression
       target, X3FunctionCallExpression functionCall) {
     return new X3MethodCallExpression(functionCall.function,
         functionCall.typeArguments, functionCall.arguments, target);

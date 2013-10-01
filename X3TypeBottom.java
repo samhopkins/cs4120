@@ -1,3 +1,3 @@
-public X3TypeBottom extends X3Type {
+public class X3TypeBottom extends X3Type {
 
 }

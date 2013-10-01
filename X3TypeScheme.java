@@ -2,7 +2,7 @@
 // a sigma, but we don't want to keep it around in the AST so we 
 // get the stuff back out at parse-time.
 
-import java.util.*:
+import java.util.*;
 
 public class X3TypeScheme {
   public List<X3TypeParameter> typeParamters;

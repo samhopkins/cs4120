@@ -14,7 +14,7 @@ public class X3Context {
     return newContext;
   }
 
-  public getType(X3Variable var) {
+  public X3Type getType(X3Variable var) {
     return variableTypes.get(var);
   }
 }
