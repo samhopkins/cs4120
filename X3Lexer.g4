@@ -60,7 +60,7 @@ INT : [0-9]+ ;
 STRING : '\"' ~[\t\r\n]*? '\"' ;
 
 // Comments
-S_COMMENT : '##' .*? [\n\r] -> skip ;
+S_COMMENT : '#' .*? [\n\r] -> skip ;
 M_COMMENT : '`' ~[`\']* (M_COMMENT ~[`\']*)* '\'' -> skip ;
 
 

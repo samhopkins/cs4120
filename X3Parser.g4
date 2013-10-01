@@ -45,6 +45,8 @@ expr : VNAME
      | expr TIMES expr
      | expr DIVIDE expr
      | expr MOD expr
+     | expr MINUS expr
+     | expr PLUS expr
      | expr ONWARDS
      | expr NONWARDS
      | expr THROUGH expr
