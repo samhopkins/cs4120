@@ -9,7 +9,7 @@ public class X3Context {
 
   public X3Context add(X3Variable var, X3Type type) {
     X3Context newContext = new X3Context();
-    newContext.variableTypes.addAll(this.variableTypes);
+    newContext.variableTypes = new HashMap<X3Variable, X3Type>(variableTypes);
     newContext.variableTypes.put(var, type);
     return newContext;
   }

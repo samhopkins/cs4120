@@ -5,13 +5,13 @@
 import java.util.*;
 
 public class X3TypeScheme {
-  public List<X3TypeParameter> typeParamters;
+  public List<X3TypeVariable> typeParameters;
   public X3Context context;
   public X3Type type;
 
-  public X3TypeScheme(List<X3TypeParamter> a,
+  public X3TypeScheme(List<X3TypeVariable> a,
       X3Context b, X3Type c) {
-    typeParamters = a;
+    typeParameters = a;
     context = b;
     type = c;
   }
@@ -19,7 +19,7 @@ public class X3TypeScheme {
   public X3TypeScheme() { 
     // must initialize here since it might not get set 
     // by a parser action if brackets were dropped
-    typeParamters = new ArrayList<X3TypeParameter>();
+    typeParameters = new ArrayList<X3TypeVariable>();
   }
 }
 

@@ -11,7 +11,7 @@ public class X3Variable {
 
   public boolean equals(Object other) {
     // TODO check this cast!
-    otherVar = (X3Variable) other;
+    X3Variable otherVar = (X3Variable) other;
     return (otherVar.name.equals(this.name));
   }
 

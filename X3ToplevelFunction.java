@@ -1,7 +1,9 @@
+import java.util.*;
+
 public class X3ToplevelFunction extends X3ToplevelItem {
   public X3Variable name;
   public X3Context context;
-  public List<X3TypeParamter> typeParamters;
+  public List<X3TypeVariable> typeParamters;
   public X3Type type;
   public X3Statement body;
 

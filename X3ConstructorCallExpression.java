@@ -7,15 +7,15 @@ public class X3ConstructorCallExpression extends X3Expression {
   public List<X3Type> typeArguments;
   public List<X3Expression> arguments;
 
-  public X3ConstructorCallExpression(X3Variable function, List<X3Type>
+  public X3ConstructorCallExpression(X3TypeName constructor, List<X3Type>
       typeArguments, List<X3Expression> arguments) {
-    this.function = function;
+    this.constructor = constructor;
     this.typeArguments = typeArguments;
     this.arguments = arguments;
   }
 
-  public X3Variable getFunction() {
-    return function;
+  public X3TypeName getFunction() {
+    return constructor;
   }
 
   public List<X3Type> getTypeArguments() {
