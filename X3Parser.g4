@@ -92,42 +92,171 @@ expr returns [X3Expression e]
                         new ArrayList<X3Expression>(), new ArrayList<X3Type>(),
                         $e1.e); }
 
-     | MINUS expr
-     | expr TIMES expr
-     | expr DIVIDE expr
-     | expr MINUS expr
-     | expr PLUS expr
-     | expr MOD expr
-     | expr ONWARDS
-     | expr NONWARDS
-     | expr THROUGH expr
-     | expr NTHROUGH expr
-     | expr THROUGHN expr
-     | expr NTHROUGHN expr
-     | expr LANGLE expr
-     | expr RANGLE expr
-     | expr LEQ expr
-     | expr GEQ expr
-     | expr EQ expr
-     | expr NEQ expr
-     | expr AND expr
-     | expr OR expr
-     | LPAREN expr RPAREN
+     | MINUS e1=expr  { $e = new X3MethodCallExpression(new X3Variable("negative"),
+                        new ArrayList<X3Expression>(), new ArrayList<X3Type>(),
+                        $e1.e); }
+     | e1=expr TIMES e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.add($e2.e);
+         $e = new X3MethodCallExpression(new X3Variable("times"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+     | e1=expr DIVIDE e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.add($e2.e);
+         $e = new X3MethodCallExpression(new X3Variable("divide"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr MINUS e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.add($e2.e);
+         $e = new X3MethodCallExpression(new X3Variable("minus"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr PLUS e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.add($e2.e);
+         $e = new X3MethodCallExpression(new X3Variable("plus"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr MOD e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.add($e2.e);
+         $e = new X3MethodCallExpression(new X3Variable("modulo"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr ONWARDS
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.add(new X3Boolean(true);
+         $e = new X3MethodCallExpression(new X3Variable("onwards"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr NONWARDS
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.add(new X3Boolean(false);
+         $e = new X3MethodCallExpression(new X3Variable("onwards"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr THROUGH e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.append($e2.e);
+         args.append(new X3Boolean(true));
+         args.append(new X3Boolean(true));
+         $e = new X3MethodCallExpression(new X3Variable("through"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr NTHROUGH e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.append($e2.e);
+         args.append(new X3Boolean(false));
+         args.append(new X3Boolean(true));
+         $e = new X3MethodCallExpression(new X3Variable("through"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr THROUGHN e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.append($e2.e);
+         args.append(new X3Boolean(true));
+         args.append(new X3Boolean(false));
+         $e = new X3MethodCallExpression(new X3Variable("through"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr NTHROUGHN e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.append($e2.e);
+         args.append(new X3Boolean(false));
+         args.append(new X3Boolean(false));
+         $e = new X3MethodCallExpression(new X3Variable("through"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr LANGLE e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.append($e2.e);
+         args.append(new X3Boolean(true));
+         $e = new X3MethodCallExpression(new X3Variable("lessThan"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr RANGLE e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.append($e1.e);
+         args.append(new X3Boolean(true));
+         $e = new X3MethodCallExpression(new X3Variable("lessThan"), args,
+            new ArrayList<X3Type>(), $e2.e); }
+
+     | e1=expr LEQ e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.append($e2.e);
+         args.append(new X3Boolean(false));
+         $e = new X3MethodCallExpression(new X3Variable("lessThan"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr GEQ e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.append($e1.e);
+         args.append(new X3Boolean(false));
+         $e = new X3MethodCallExpression(new X3Variable("lessThan"), args,
+            new ArrayList<X3Type>(), $e2.e); }
+
+     | e1=expr EQ e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.append($e2.e);
+         $e = new X3MethodCallExpression(new X3Variable("equals"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr NEQ e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.append($e2.e);
+         X3Expression equalsCall = new X3MethodCallExpression(
+             new X3Variable("equals"), args, new ArrayList<X3Type>(), $e1.e); 
+         $e = new X3MethodCallExpression(new X3Variable("negate"),
+             new ArrayList<X3Expression>(), new ArrayList<X3Type>(),
+             equalsCall); }
+
+     | e1=expr AND e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.add($e2.e);
+         $e = new X3MethodCallExpression(new X3Variable("and"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | e1=expr OR e2=expr
+       { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
+         args.add($e2.e);
+         $e = new X3MethodCallExpression(new X3Variable("or"), args,
+            new ArrayList<X3Type>(), $e1.e); }
+
+     | LPAREN e1=expr RPAREN
+       { $e = $e1.e; }
      ;
 
-if_stmt : IF LPAREN expr RPAREN stmt ELSE stmt
-        | IF LPAREN expr RPAREN stmt
+if_stmt returns [X3IfStatement s]
+        : { $s = new X3IfStatement(); } 
+          IF LPAREN e1=expr RPAREN sif=stmt 
+          { $s.test = $e1.e; 
+            $s.ifBranch = $sif.s; }
+          (ELSE selse=stmtt
+           { $s.elseBranch = $selse.s; } )?
         ;
 
-stmt : LCURLY stmt* RCURLY
-     | VNAME ASSIGN expr SEMICOLON
-     | if_stmt
-     | WHILE LPAREN expr RPAREN stmt
-     | FOR LPAREN VNAME IN expr RPAREN stmt
-     | RETURN expr SEMICOLON
+stmt returns [X3Statement s]
+     : { List<X3Statement> l = new ArrayList<X3Statement>(); }
+       LCURLY (s1=stmt { l.append($s1.s); })* RCURLY
+     | v=VNAME ASSIGN e1=expr SEMICOLON
+       { $s = new X3AssignmentStatement(new X3Variable($v.text), $e1.e); }
+     | i=if_stmt { $s = $i.s; }
+     | WHILE LPAREN e1=expr RPAREN s1=stmt
+       { $s = new X3WhileStatement($e1.e, $s1.s); }
+     | FOR LPAREN v=VNAME IN e1=expr RPAREN s1=stmt
+       { $s = new X3ForStatement(new X3Variable(v.test), $e1.e, $s1.s); } 
+     | RETURN e1=expr SEMICOLON
+       { $s = new X3ReturnStatement($e1.e); } 
      ;
 
-interfaze : INTERFACE TNAME tvar_lst? (EXTENDS tau)? interface_impl ;
+interfaze returns [X3Interface i]
+          : { $i = new X3Interface(); }
+            INTERFACE t=TNAME 
+            { $i.name = new X3TypeName(t.text); }
+            (tlst=tvar_lst { $i.typeParamters = $tlst.lst; })? 
+            (EXTENDS t1=tau { $i.superClass = $t1.t; })? 
+            fns=interface_impl { $i.functions = $fns.lst; };
 
 clazz : CLASS TNAME tvar_lst? gamma (EXTENDS tau)? class_impl ;
 
