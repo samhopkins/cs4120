@@ -1,1 +1,2 @@
-equality and hashing for X3Variable so that the map in X3Context works!
+make kind contexts so that we can visit a whole context at once
+finish writing accept methods for visitor patterns

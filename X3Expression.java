@@ -1,4 +1,4 @@
-public abstract class X3Expression {
+public abstract class X3Expression extends ASTNode {
   private X3Type mType;
 
   public final X3Type getType(X3Context context) throws NoSuchTypeException {

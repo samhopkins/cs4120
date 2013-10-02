@@ -16,4 +16,8 @@ public class X3TypeName extends X3Type {
   public List<X3Type> getTypes() {
     return new ArrayList<X3Type>(typeArguments);
   }
+
+  public void accept(ASTVisitor v) {
+    v.visitX3TypeName(this);
+  }
 }

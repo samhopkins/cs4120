@@ -21,9 +21,9 @@ tvar_lst returns [List<X3TypeVariable> lst]
 tau returns [X3Type t]
     : v=TVAR 
       { $t = new X3TypeVariable($v.text); }
-    | v=TNAME { List<X3Type> typeArguments; }
+    | v=TNAME { List<X3Type> typeArguments = new ArrayList<X3Type>(); }
       (lst=tau_lst { typeArguments = $lst.lst; })?
-      { $t = new X3TypeName($v.text, typeArguments)
+      { $t = new X3TypeName($v.text, typeArguments); }
     | t1=tau AND t2=tau 
       { $t = new X3TypeIntersection($t1.t, $t2.t); }
     | THING 
@@ -43,9 +43,9 @@ gamma returns [X3Context ctxt]
       : LPAREN RPAREN { $ctxt = new X3Context(new HashMap<X3Variable, X3Type>()); }
       |  LPAREN v=VNAME COLON t=tau 
          { Map<X3Variable, X3Type> vtypes = new HashMap<X3Variable, X3Type>();
-           vtypes.add(new X3Variable($v.text, $t.t));
+           vtypes.put(new X3Variable($v.text), $t.t); }
          (COMMA v=VNAME COLON t=tau
-         { vtypes.add(new X3Variable($v.text), $t.t); })* 
+         { vtypes.put(new X3Variable($v.text), $t.t); })* 
          { $ctxt = new X3Context(vtypes); } RPAREN
       ;
 
@@ -53,22 +53,23 @@ sigma returns [X3TypeScheme s]
       : { List<X3TypeVariable> tvars = new ArrayList<X3TypeVariable>(); }
         (tlst=tvar_lst { tvars = $tlst.lst; } )? 
         g=gamma COLON t=tau 
-        { $s.context = new X3TypeScheme(tvars, $g.ctxt, $t.t); } ;
+        { $s = new X3TypeScheme(tvars, $g.ctxt, $t.t); } ;
 
 func_call returns [X3FunctionCallExpression c]
           : { List<X3Type> typeArgs = new ArrayList<X3Type>(); }
             v=VNAME (tlst=tau_lst { typeArgs = $tlst.lst ;})?
             elst=expr_lst 
-            { $c = new X3FunctionCallExpression(typeArgs, X3Variable($v.text),
-                   $elst.lst); }
-            ;
+            { $c = new X3FunctionCallExpression(new X3Variable($v.text),
+            typeArgs, $elst.lst); }
+          ;
 
 constructor_call returns [X3ConstructorCallExpression c]
                  : { List<X3Type> typeArgs = new ArrayList<X3Type>(); }
                    t=TNAME (tlst=tau_lst { typeArgs = $tlst.lst ;})? 
                    elst=expr_lst 
                    { $c = new X3ConstructorCallExpression(new
-                     X3TypeVaraible($t.text), typeArgs, $elst.lst); }
+                     X3TypeName($t.text, typeArgs), typeArgs, $elst.lst); }
+                 ;
 
 list_literal returns [X3ListExpression l]
              : LSQBRACKET RSQBRACKET  
@@ -81,12 +82,12 @@ list_literal returns [X3ListExpression l]
       
 expr returns [X3Expression e]
      : v=VNAME { $e = new X3VariableExpression(new X3Variable($v.text)); }
-     | f=func_call { $e = f.c; }
-     | c=constructor_call { $e = c.c; }
+     | f=func_call { $e = $f.c; }
+     | c=constructor_call { $e = $c.c; }
      | e1=expr DOT f=func_call 
          { $e =
-         X3MethodCallExpression.X3FuctionCallExpressionToX3MethodCallExpression(
-         $f.c, $e1.e) ; }
+         X3MethodCallExpression.X3FunctionCallExpressionToX3MethodCallExpression(
+         $e1.e, $f.c) ; }
      | l=list_literal { $e = $l.l; }
      | e1=expr APPEND e2=expr { $e = new X3AppendExpression($e1.e, $e2.e) ; }
      | TRUE { $e = new X3BooleanExpression(true); }
@@ -138,7 +139,7 @@ expr returns [X3Expression e]
      | e1=expr THROUGH e2=expr
        { ArrayList<X3Expression> args = new ArrayList<X3Expression>();
          args.add($e2.e);
-         args.add(new X3BooleanExpressionExpression(true));
+         args.add(new X3BooleanExpression(true));
          args.add(new X3BooleanExpression(true));
          $e = new X3MethodCallExpression(new X3Variable("through"), args,
             new ArrayList<X3Type>(), $e1.e); }
@@ -215,13 +216,12 @@ expr returns [X3Expression e]
      ;
 
 if_stmt returns [X3IfStatement s]
-        : { X3Statement elseBranch = null;
+        : { X3Statement elseBranch = new X3SequenceStatement(new
+            ArrayList<X3Statement>()); }
           IF LPAREN e1=expr RPAREN sif=stmt 
-          { $s.test = $e1.e; 
-            $s.ifBranch = $sif.s; }
           (ELSE selse=stmt
            { elseBranch = $selse.s; } )?
-          { $s = new X3IfStatement($e1.e, $sif.e, elseBranch); }
+          { $s = new X3IfStatement($e1.e, $sif.s, elseBranch); }
         ;
 
 stmt returns [X3Statement s]
@@ -240,29 +240,39 @@ stmt returns [X3Statement s]
      ;
 
 interfaze returns [X3Interface i]
-          : { $i = new X3Interface(); }
+          : { List<X3TypeVariable> typeParams = new ArrayList<X3TypeVariable>(); }
+            { X3Type superType = new X3TypeTop(); }
             INTERFACE t=TNAME 
-            { $i.name = new X3TypeName($t.text); }
-            (tlst=tvar_lst { $i.typeParameters = $tlst.lst; })? 
-            (EXTENDS t1=tau { $i.superType = $t1.t; })? 
-            mthds=interface_impl { $i.methods = $mthds.lst; };
+            (tlst=tvar_lst { typeParams = $tlst.lst; })? 
+            (EXTENDS t1=tau { superType = $t1.t; })? 
+            mthds=interface_impl
+            { $i = new X3Interface(new X3TypeName($t.text, new
+            ArrayList<X3Type>()), typeParams,
+            superType, $mthds.lst); }
+          ;
 
 clazz returns [X3Class c]
-      : { $c = new X3Class(); 
-          X3Constructor cstruct = new X3Constructor(); 
-          $c.constructor = cstruct; }
-        CLASS t=TNAME { $c.name = new X3TypeName($t.text); }
-        (tlst=tvar_lst { $c.typeParameters = $tlst.lst; })? g=gamma 
-        { $c.context = $g.ctxt; }
-        (EXTENDS t1=tau { $c.superType = $t1.t; })? 
-        LCURLY (st=stmt { cstruct.body.add($st.s); })* 
-        (SUPER elst=expr_lst SEMICOLON { cstruct.superCallArguments =
-        $elst.lst; })? 
-        (mthd=mthd_decl { $c.methods.add($mthd.m); })* RCURLY ;
+      : { List<X3TypeVariable> typeParams = new ArrayList<X3TypeVariable>(); }
+        { X3Type superType = new X3TypeTop(); }
+        { List<X3Statement> cstructrBody = new ArrayList<X3Statement>(); }
+        { List<X3Expression> superArgs = new ArrayList<X3Expression>(); }
+        { List<X3Method> methods = new ArrayList<X3Method>(); }
+        CLASS t=TNAME
+        (tlst=tvar_lst { typeParams = $tlst.lst; })? g=gamma 
+        (EXTENDS t1=tau { superType = $t1.t; })? 
+        LCURLY (st=stmt { cstructrBody.add($st.s); })* 
+        (SUPER elst=expr_lst SEMICOLON { superArgs = $elst.lst; })? 
+        (mthd=mthd_decl { methods.add($mthd.m); })* RCURLY
+        { $c = new X3Class(new X3TypeName($t.text, new ArrayList<X3Type>()), 
+                  typeParams, superType,
+                  $g.ctxt, cstructrBody, superArgs, methods); }
+      ;
 
 interface_impl returns [List<X3Method> lst]
                : { $lst = new ArrayList<X3Method>(); } LCURLY (mthd=mthd_decl {
-                 $lst.add($mthd.m); })* RCURLY ; 
+                 $lst.add($mthd.m); })* RCURLY
+               ;
+
 toplevel_fun returns [X3ToplevelFunction f]
              : FUN v=VNAME sig=sigma st=stmt SEMICOLON 
                { $f = new X3ToplevelFunction(new X3Variable($v.text), $sig.s,
@@ -277,15 +287,26 @@ mthd_decl returns [X3Method m]
           ;
 
 program returns [X3Program p]
-        : s1=stmt { $p = new X3Program(); $p.lst.add($s1.s); }
-        | s1=stmt p1=program { $p = new X3Program(); $p.lst.add($s1.s);
-                               $p.lst.addAll($p1.p.lst);}
-        | t1=toplevel_fun p1=program  { $p = new X3Program(); $p.lst.add($t1.f);
-                                        $p.lst.addAll($p1.p.lst);}
-        | i1=interfaze p1=program  { $p = new X3Program(); $p.lst.add($i1.i);
-                                     $p.lst.addAll($p1.p.lst);}
-        | c1=clazz p1=program  { $p = new X3Program(); $p.lst.add($c1.c);
-                                 $p.lst.addAll($p1.p.lst);}
+        : s1=stmt 
+          { List<X3ToplevelItem> lst = new ArrayList<X3ToplevelItem>();
+            lst.add($s1.s);
+            $p = new X3Program(lst); }
+        | s1=stmt p1=program 
+          { List<X3ToplevelItem> lst = $p1.p.getToplevelItems();
+            lst.add($s1.s);
+            $p = new X3Program(lst); } 
+        | t1=toplevel_fun p1=program
+            { List<X3ToplevelItem> lst = $p1.p.getToplevelItems();
+            lst.add($t1.f);
+            $p = new X3Program(lst); } 
+        | i1=interfaze p1=program
+            { List<X3ToplevelItem> lst = $p1.p.getToplevelItems();
+            lst.add($i1.i);
+            $p = new X3Program(lst); } 
+        | c1=clazz p1=program 
+            { List<X3ToplevelItem> lst = $p1.p.getToplevelItems();
+            lst.add($c1.c);
+            $p = new X3Program(lst); } 
         ; 
 
 input returns [X3Program p] : p1=program EOF { $p = $p1.p; };

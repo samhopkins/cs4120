@@ -1,8 +1,6 @@
 import java.util.*;
 
 public class X3ConstructorCallExpression extends X3Expression {
-  // hack hack hack to deal with the optional type paramters meaning we have to
-  // build the object before we know all the values of the fields
   private X3TypeName constructor;
   private List<X3Type> typeArguments;
   private List<X3Expression> arguments;
@@ -28,5 +26,10 @@ public class X3ConstructorCallExpression extends X3Expression {
 
   protected X3Type calculateType(X3Context context) throws NoSuchTypeException {
     throw new NoSuchTypeException();
+  }
+
+  public void accept(ASTVisitor v) {
+    constructor.accept(v);
+    v.visitX3ConstructorCallExpression(this);
   }
 }

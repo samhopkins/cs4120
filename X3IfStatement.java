@@ -15,4 +15,11 @@ public class X3IfStatement extends X3Statement {
   public X3Statement getElseBranch() { return elseBranch; }
 
   public X3IfStatement() { }
+
+  public void accept(ASTVisitor v) {
+    test.accept(v);
+    ifBranch.accept(v);
+    elseBranch.accept(v);
+    v.visitX3IfStatement(this);
+  }
 }

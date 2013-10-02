@@ -9,4 +9,10 @@ public class X3AssignmentStatement extends X3Statement {
 
   public X3Variable getVariable() { return variable; }
   public X3Expression getValue() { return value; }
+
+  public void accept(ASTVisitor v) {
+    variable.accept(v);
+    value.accept(v);
+    v.visitX3AssignmentStatement(this);
+  }
 }

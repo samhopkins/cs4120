@@ -12,4 +12,8 @@ public class X3Integer extends X3Expression {
   protected X3Type calculateType(X3Context context) throws NoSuchTypeException {
     throw new NoSuchTypeException();
   }
+
+  public void accept(ASTVisitor v) {
+    v.visitX3Integer(this);
+  }
 }

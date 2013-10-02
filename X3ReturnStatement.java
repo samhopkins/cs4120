@@ -6,4 +6,9 @@ public class X3ReturnStatement extends X3Statement {
   }
 
   public X3Expression getToReturn() { return toReturn; }
+
+  public void accept(ASTVisitor v) {
+    toReturn.accept(v);
+    v.visitX3ReturnStatement(this);
+  }
 }

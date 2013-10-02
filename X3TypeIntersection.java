@@ -14,4 +14,10 @@ public class X3TypeIntersection extends X3Type {
   public X3Type getT2() {
     return t2;
   }
+
+  public void accept(ASTVisitor v) {
+    t1.accept(v);
+    t2.accept(v);
+    v.visitX3TypeIntersection(this);
+  }
 }

@@ -13,4 +13,11 @@ public class X3ForStatement extends X3Statement {
   public X3Variable getVariable() { return variable; }
   public X3Expression getIter() { return iter; }
   public X3Statement getBody() { return body; }
+
+  public void accept(ASTVisitor v) {
+    variable.accept(v);
+    iter.accept(v);
+    body.accept(v);
+    v.visitX3ForStatement(this);
+  }
 }

@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class X3Constructor {
+public class X3Constructor extends ASTNode {
   private List<X3Statement> body;
   private List<X3Expression> superCallArguments;
 
@@ -17,4 +17,8 @@ public class X3Constructor {
 
   public List<X3Statement> getBody() { return body; }
   public List<X3Expression> getSuperCallArguments() { return superCallArguments; }
+
+  public void accept(ASTVisitor v) {
+    v.visitX3Constructor(this);
+  }
 }

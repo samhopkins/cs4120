@@ -14,4 +14,8 @@ public class X3SequenceStatement extends X3Statement {
   public List<X3Statement> getStatements() { 
     return new ArrayList<X3Statement>(statements);
   }
+
+  public void accept(ASTVisitor v) {
+    v.visitX3SequenceStatement(this);
+  }
 }

@@ -1,4 +1,4 @@
-public class X3Variable {
+public class X3Variable extends ASTNode {
   private String name;
 
   public X3Variable(String name) {
@@ -20,4 +20,9 @@ public class X3Variable {
   public int hashCode() {
     return name.hashCode();
   }
+
+  public void accept(ASTVisitor v) {
+    v.visitX3Variable(this);
+  }
+
 }

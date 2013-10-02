@@ -12,4 +12,9 @@ public class X3VariableExpression extends X3Expression {
   protected X3Type calculateType(X3Context context) throws NoSuchTypeException {
     throw new NoSuchTypeException();
   }
+
+  public void accept(ASTVisitor v) {
+    variable.accept(v);
+    v.visitX3VariableExpression(this);
+  }
 }

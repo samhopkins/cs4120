@@ -1,16 +1,16 @@
 public class X3MethodImpl extends X3Method {
   private X3Statement body;
 
-  public X3MethodImpl() { }
-
   public X3MethodImpl(
       X3Variable name, X3TypeScheme s, X3Statement body) {
-    this.name = name;
-    this.typeParameters = s.typeParameters;
-    this.context = s.context;
-    this.type = s.type;
+    super(name, s.getContext(), s.getTypeParameters(), s.getType());
     this.body = body;
   }
 
   public X3Statement getBody() { return body; }
+
+  public void accept(ASTVisitor v) {
+    body.accept(v);
+    super.accept(v);
+  }
 }

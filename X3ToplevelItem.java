@@ -1,3 +1,3 @@
-public abstract class X3ToplevelItem {
+public abstract class X3ToplevelItem extends ASTNode {
 
 }

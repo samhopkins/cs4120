@@ -9,4 +9,10 @@ public class X3WhileStatement extends X3Statement {
 
   public X3Expression getTest() { return test; }
   public X3Statement getBody() { return body; }
+
+  public void accept(ASTVisitor v) {
+    test.accept(v);
+    body.accept(v);
+    v.visitX3WhileStatement(this);
+  }
 }

@@ -8,4 +8,8 @@ public class X3TypeVariable extends X3Type {
   public String getVariable() {
     return variable;
   }
+
+  public void accept(ASTVisitor v) {
+    v.visitX3TypeVariable(this);
+  }
 }

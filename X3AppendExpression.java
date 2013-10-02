@@ -18,4 +18,10 @@ public class X3AppendExpression extends X3Expression {
   protected X3Type calculateType(X3Context context) throws NoSuchTypeException {
     throw new NoSuchTypeException();
   }
+
+  public void accept(ASTVisitor v) {
+    left.accept(v);
+    right.accept(v);
+    v.visitX3AppendExpression(this);
+  }
 }

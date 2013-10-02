@@ -1,3 +1,3 @@
-public abstract class X3Type {
+public abstract class X3Type extends ASTNode {
 
 }

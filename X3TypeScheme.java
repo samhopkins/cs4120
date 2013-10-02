@@ -16,8 +16,8 @@ public class X3TypeScheme {
     type = c;
   }
 
-  public List<X3TypeVariable> getTypeParamters() {
-    return new ArrayList<X3TypeVariable>(typeParamters);
+  public List<X3TypeVariable> getTypeParameters() {
+    return new ArrayList<X3TypeVariable>(typeParameters);
   }
   public X3Context getContext() { return context; }
   public X3Type getType() { return type; }
