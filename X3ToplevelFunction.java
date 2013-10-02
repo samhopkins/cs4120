@@ -1,11 +1,11 @@
 import java.util.*;
 
 public class X3ToplevelFunction extends X3ToplevelItem {
-  public X3Variable name;
-  public X3Context context;
-  public List<X3TypeVariable> typeParamters;
-  public X3Type type;
-  public X3Statement body;
+  private X3Variable name;
+  private X3Context context;
+  private List<X3TypeVariable> typeParamters;
+  private X3Type declaredType;
+  private X3Statement body;
 
   public X3ToplevelFunction() { }
 
@@ -17,4 +17,12 @@ public class X3ToplevelFunction extends X3ToplevelItem {
     this.type = s.type;
     this.body = body;
   }
+
+  public X3Variable getName() { return name; }
+  public X3Context getContext() { return context; }
+  public List<X3TypeVariable> getTypeParamters {
+    return new ArrayList<X3TypeVariable>(typeParamters);
+  }
+  public X3Type getDeclaredType() { return declaredType; }
+  public X3Statement getBody() { return body; }
 }

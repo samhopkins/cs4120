@@ -9,6 +9,8 @@ public class X3Variable {
     return name;
   }
 
+  // need these so that we can use a hashmap with variables as keys to implement
+  // a context
   public boolean equals(Object other) {
     // TODO check this cast!
     X3Variable otherVar = (X3Variable) other;

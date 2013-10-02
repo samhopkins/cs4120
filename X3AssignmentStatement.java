@@ -6,4 +6,7 @@ public class X3AssignmentStatement extends X3Statement {
     this.variable = variable;
     this.value = value;
   }
+
+  public X3Variable getVariable() { return variable; }
+  public X3Expression getValue() { return value; }
 }

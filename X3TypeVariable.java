@@ -1,5 +1,5 @@
 public class X3TypeVariable extends X3Type {
-  public String variable;
+  private String variable;
 
   public X3TypeVariable(String variable) {
     this.variable = variable;

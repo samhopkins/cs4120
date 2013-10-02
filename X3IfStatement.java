@@ -1,7 +1,7 @@
 public class X3IfStatement extends X3Statement {
-  public X3Expression test;
-  public X3Statement ifBranch;
-  public X3Statement elseBranch;
+  private X3Expression test;
+  private X3Statement ifBranch;
+  private X3Statement elseBranch;
 
   public X3IfStatement(X3Expression test, X3Statement ifBranch, X3Statement
       elseBranch) {
@@ -9,6 +9,10 @@ public class X3IfStatement extends X3Statement {
     this.ifBranch = ifBranch;
     this.elseBranch = elseBranch;
   }
+
+  public X3Expression getTest() { return test; }
+  public X3Statement getIfBranch() { return ifBranch; }
+  public X3Statement getElseBranch() { return elseBranch; }
 
   public X3IfStatement() { }
 }

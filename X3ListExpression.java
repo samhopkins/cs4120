@@ -11,10 +11,6 @@ public class X3ListExpression extends X3Expression {
     return elements;
   }
 
-  public void addExpression(X3Expression e) {
-    elements.add(e);
-  }
-
   public X3Type calculateType(X3Context context) throws NoSuchTypeException {
     throw new NoSuchTypeException();
   }

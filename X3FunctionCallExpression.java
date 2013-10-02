@@ -3,9 +3,9 @@ import java.util.*;
 public class X3FunctionCallExpression extends X3Expression {
   // hack hack hack to deal with the optional type paramters meaning we have to
   // build the object before we know all the values of the fields
-  public X3Variable function;
-  public List<X3Type> typeArguments;
-  public List<X3Expression> arguments;
+  private X3Variable function;
+  private List<X3Type> typeArguments;
+  private List<X3Expression> arguments;
 
   public X3FunctionCallExpression(X3Variable function, List<X3Type>
       typeArguments, List<X3Expression> arguments) {

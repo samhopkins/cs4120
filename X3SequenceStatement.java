@@ -10,4 +10,8 @@ public class X3SequenceStatement extends X3Statement {
   public void appendStatement(X3Statement statement) {
     statements.add(statement);
   }
+
+  public List<X3Statement> getStatements() { 
+    return new ArrayList<X3Statement>(statements);
+  }
 }

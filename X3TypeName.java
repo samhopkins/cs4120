@@ -2,11 +2,11 @@ import java.util.*;
 
 public class X3TypeName extends X3Type {
   private String name;
-  public List<X3Type> typeArguments;
+  private List<X3Type> typeArguments;
 
-  public X3TypeName(String name) {
+  public X3TypeName(String name, List<X3Type> typeArguments) {
     this.name = name;
-    this.typeArguments = new ArrayList<X3Type>();
+    this.typeArguments = typeArguments;
   }
 
   public String getName() {
@@ -14,10 +14,6 @@ public class X3TypeName extends X3Type {
   }
 
   public List<X3Type> getTypes() {
-    return typeArguments;
-  }
-
-  public void addTypeArgument(X3Type arg) {
-    typeArguments.add(arg);
+    return new ArrayList<X3Type>(typeArguments);
   }
 }
