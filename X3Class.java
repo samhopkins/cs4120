@@ -38,4 +38,9 @@ public class X3Class extends X3ToplevelItem {
     constructorArguments.accept(v);
     v.visitX3Class(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    b.append("class ");
+    name.tokenize(b);
+
 }

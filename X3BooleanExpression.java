@@ -16,6 +16,10 @@ public class X3BooleanExpression extends X3Expression {
   public void accept(ASTVisitor v) {
     v.visitX3BooleanExpression(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    b.append((new Boolean(b)).toString());
+  }
 }
 
 
