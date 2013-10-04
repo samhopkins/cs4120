@@ -18,7 +18,7 @@ public class X3BooleanExpression extends X3Expression {
   }
 
   public void tokenize(StringBuilder b) {
-    b.append((new Boolean(b)).toString());
+    b.append((new Boolean(value)).toString());
     b.append(" ");
   }
 }

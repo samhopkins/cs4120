@@ -22,4 +22,13 @@ public class X3IfStatement extends X3Statement {
     elseBranch.accept(v);
     v.visitX3IfStatement(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    b.append("if ( ");
+    test.tokenize(b);
+    b.append(") ");
+    ifBranch.tokenize(b);
+    b.append("else ");
+    elseBranch.tokenize(b);
+  }
 }

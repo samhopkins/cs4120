@@ -26,5 +26,7 @@ public class X3ForStatement extends X3Statement {
     variable.tokenize(b);
     b.append("in ");
     iter.tokenize(b);
-    b.append
+    b.append(") ");
+    body.tokenize(b);
+  }
 }

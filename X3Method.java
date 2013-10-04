@@ -1,3 +1,4 @@
+import java.lang.StringBuilder;
 import java.util.*;
 
 public class X3Method extends ASTNode {
@@ -25,5 +26,14 @@ public class X3Method extends ASTNode {
     context.accept(v);
     declaredType.accept(v);
     v.visitX3Method(this);
+  }
+
+  public void tokenize(StringBuilder b) {
+    b.append("fun ");
+    name.tokenize(b);
+    Utils.tokenizeAngleList(b, typeParameters);
+    context.tokenize(b);
+    b.append(": ");
+    declaredType.tokenize(b);
   }
 }

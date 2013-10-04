@@ -1,3 +1,5 @@
+import java.lang.StringBuilder;
+
 public class X3Variable extends ASTNode {
   private String name;
 
@@ -23,6 +25,11 @@ public class X3Variable extends ASTNode {
 
   public void accept(ASTVisitor v) {
     v.visitX3Variable(this);
+  }
+
+  public void tokenize(StringBuilder b) {
+    b.append(name);
+    b.append(' ');
   }
 
 }

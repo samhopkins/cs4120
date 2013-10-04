@@ -1,3 +1,4 @@
+import java.lang.StringBuilder;
 import java.util.*;
 
 public class X3ToplevelFunction extends X3ToplevelItem {
@@ -32,5 +33,15 @@ public class X3ToplevelFunction extends X3ToplevelItem {
     declaredType.accept(v);
     body.accept(v);
     v.visitX3ToplevelFunction(this);
+  }
+
+  public void tokenize(StringBuilder b) {
+    b.append("fun ");
+    name.tokenize(b);
+    Utils.tokenizeAngleList(b, typeParameters);
+    context.tokenize(b);
+    b.append(": ");
+    declaredType.tokenize(b);
+    body.tokenize(b);
   }
 }

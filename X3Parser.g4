@@ -42,7 +42,7 @@ tau_lst returns [List<X3Type> lst]
 gamma returns [X3Context ctxt]
       : LPAREN RPAREN { $ctxt = new X3Context(new LinkedHashMap<X3Variable, X3Type>()); }
       |  LPAREN v=VNAME COLON t=tau 
-         { Map<X3Variable, X3Type> vtypes = new LinkedHashMap<X3Variable, X3Type>();
+         { LinkedHashMap<X3Variable, X3Type> vtypes = new LinkedHashMap<X3Variable, X3Type>();
            vtypes.put(new X3Variable($v.text), $t.t); }
          (COMMA v=VNAME COLON t=tau
          { vtypes.put(new X3Variable($v.text), $t.t); })* 

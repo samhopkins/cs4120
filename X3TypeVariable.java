@@ -1,3 +1,4 @@
+import java.lang.StringBuilder;
 public class X3TypeVariable extends X3Type {
   private String variable;
 
@@ -11,5 +12,10 @@ public class X3TypeVariable extends X3Type {
 
   public void accept(ASTVisitor v) {
     v.visitX3TypeVariable(this);
+  }
+
+  public void tokenize(StringBuilder b) {
+    b.append(variable);
+    b.append(' ');
   }
 }

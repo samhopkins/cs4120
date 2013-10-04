@@ -3,4 +3,8 @@ public class X3TypeBottom extends X3Type {
     v.visitX3TypeBottom(this);
   }
 
+  public void tokenize(StringBuilder b) {
+    b.append("Nothing ");
+  }
+
 }

@@ -14,4 +14,10 @@ public class X3Program extends ASTNode {
   public void accept(ASTVisitor v) {
     v.visitX3Program(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    for (X3ToplevelItem item : lst) {
+      item.tokenize(b);
+    }
+  }
 }

@@ -18,4 +18,12 @@ public class X3SequenceStatement extends X3Statement {
   public void accept(ASTVisitor v) {
     v.visitX3SequenceStatement(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    b.append("{ ");
+    for (X3Statement stmt : statements) {
+      stmt.tokenize(b);
+    }
+    b.append("} ");
+  }
 }

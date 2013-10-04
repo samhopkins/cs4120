@@ -20,4 +20,10 @@ public class X3TypeIntersection extends X3Type {
     t2.accept(v);
     v.visitX3TypeIntersection(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    t1.tokenize(b);
+    b.append("& ");
+    t2.tokenize(b);
+  }
 }

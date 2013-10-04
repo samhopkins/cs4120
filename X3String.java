@@ -1,3 +1,5 @@
+import java.lang.StringBuilder;
+
 public class X3String extends X3Expression {
   private String value;
 
@@ -18,4 +20,10 @@ public class X3String extends X3Expression {
     v.visitX3String(this);
   }
 
+  public void tokenize(StringBuilder b) {
+    b.append('"');
+    b.append(value);
+    b.append('"');
+    b.append(' ');
+  }
 }

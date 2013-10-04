@@ -18,7 +18,7 @@ public class X3Context extends ASTNode {
 
   public void tokenize(StringBuilder b) {
     List<TypedVar> typedVars = new ArrayList<TypedVar>();
-    for (X3Variable key : variableTypes.keys()) {
+    for (X3Variable key : variableTypes.keySet()) {
       typedVars.add(new TypedVar(key, this.getType(key)));
     }
     Utils.tokenizeParenList(b, typedVars);

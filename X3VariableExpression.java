@@ -1,3 +1,5 @@
+import java.lang.StringBuilder;
+
 public class X3VariableExpression extends X3Expression {
   private X3Variable variable;
 
@@ -16,5 +18,9 @@ public class X3VariableExpression extends X3Expression {
   public void accept(ASTVisitor v) {
     variable.accept(v);
     v.visitX3VariableExpression(this);
+  }
+
+  public void tokenize(StringBuilder b) {
+    variable.tokenize(b);
   }
 }

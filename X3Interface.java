@@ -26,4 +26,17 @@ public class X3Interface extends X3ToplevelItem {
     superType.accept(v);
     v.visitX3Interface(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    b.append("interface ");
+    name.tokenize(b);
+    Utils.tokenizeAngleList(b, typeParameters);
+    b.append("extends ");
+    superType.tokenize(b);
+    b.append("{ ");
+    for (X3Method m : methods) {
+      m.tokenize(b);
+    }
+    b.append("} ");
+  }
 }

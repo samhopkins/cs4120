@@ -13,4 +13,9 @@ public class X3MethodImpl extends X3Method {
     body.accept(v);
     super.accept(v);
   }
+
+  public void tokenize(StringBuilder b) {
+    super.tokenize(b);
+    body.tokenize(b);
+  }
 }

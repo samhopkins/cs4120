@@ -16,4 +16,9 @@ public class X3Integer extends X3Expression {
   public void accept(ASTVisitor v) {
     v.visitX3Integer(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    b.append((new Integer(value)).toString());
+    b.append(' ');
+  }
 }

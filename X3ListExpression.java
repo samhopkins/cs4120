@@ -18,4 +18,9 @@ public class X3ListExpression extends X3Expression {
   public void accept(ASTVisitor v) {
     v.visitX3ListExpression(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    Utils.tokenizeList('[', ']', b, elements);
+  }
+
 }

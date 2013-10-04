@@ -34,4 +34,10 @@ public class X3FunctionCallExpression extends X3Expression {
     function.accept(v);
     v.visitX3FunctionCallExpression(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    function.tokenize(b);
+    Utils.tokenizeAngleList(b, typeArguments);
+    Utils.tokenizeParenList(b, typeArguments);
+  }
 }

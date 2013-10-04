@@ -29,4 +29,10 @@ public class X3MethodCallExpression extends X3FunctionCallExpression {
     target.accept(v);
     super.accept(v);
   }
+
+  public void tokenize(StringBuilder b) {
+    target.tokenize(b);
+    b.append(". ");
+    super.tokenize(b);
+  }
 }
