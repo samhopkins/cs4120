@@ -42,5 +42,21 @@ public class X3Class extends X3ToplevelItem {
   public void tokenize(StringBuilder b) {
     b.append("class ");
     name.tokenize(b);
-
+    Utils.tokenizeAngleList(b, typeParameters);
+    constructorArguments.tokenize(b);
+    b.append("extends ");
+    superType.tokenize(b);
+    b.append("{ ");
+    for (X3Statement s : constructorBody) {
+      s.tokenize(b);
+    }
+    b.append("super");
+    Utils.tokenizeParenList(b, superCallArguments);
+    b.deleteCharAt(b.length() -1) // remove trailing space so we can append semicolon
+    b.append("; ");
+    for (X3Method m : methods) {
+      m.tokenize(b);
+    }
+    b.append("} ");
+  }
 }

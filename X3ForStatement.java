@@ -20,4 +20,11 @@ public class X3ForStatement extends X3Statement {
     body.accept(v);
     v.visitX3ForStatement(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    b.append("for ( ");
+    variable.tokenize(b);
+    b.append("in ");
+    iter.tokenize(b);
+    b.append
 }

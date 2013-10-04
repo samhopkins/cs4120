@@ -20,7 +20,7 @@ public class X3AssignmentStatement extends X3Statement {
 
   public void tokenize(StringBuilder b) {
     variable.tokenize(b);
-    b.append(" := ");
+    b.append(":= ");
     value.tokenize(b);
   }
 }

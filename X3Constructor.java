@@ -1,6 +1,7 @@
+// temporary holding class; does not end up in the ast
 import java.util.*;
 
-public class X3Constructor extends ASTNode {
+public class X3Constructor {
   private List<X3Statement> body;
   private List<X3Expression> superCallArguments;
 

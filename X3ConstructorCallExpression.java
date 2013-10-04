@@ -32,4 +32,10 @@ public class X3ConstructorCallExpression extends X3Expression {
     constructor.accept(v);
     v.visitX3ConstructorCallExpression(this);
   }
+
+  public void tokenize(StringBuilder b) {
+    constructor.tokenize(b);
+    Utils.tokenizeAngleList(b, typeArguments);
+    Utils.tokenizeParenList(b, arguments);
+  }
 }

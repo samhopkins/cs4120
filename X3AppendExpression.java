@@ -29,7 +29,7 @@ public class X3AppendExpression extends X3Expression {
 
   public void tokenize(StringBuilder b) {
     left.tokenize(b);
-    b.append(" ++ ");
+    b.append("++ ");
     right.tokenize(b);
   }
 }
