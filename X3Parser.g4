@@ -289,23 +289,23 @@ mthd_decl returns [X3Method m]
 program returns [X3Program p]
         : s1=stmt 
           { List<X3ToplevelItem> lst = new ArrayList<X3ToplevelItem>();
-            lst.add($s1.s);
+            lst.add(0, $s1.s);
             $p = new X3Program(lst); }
         | s1=stmt p1=program 
           { List<X3ToplevelItem> lst = $p1.p.getToplevelItems();
-            lst.add($s1.s);
+            lst.add(0, $s1.s);
             $p = new X3Program(lst); } 
         | t1=toplevel_fun p1=program
             { List<X3ToplevelItem> lst = $p1.p.getToplevelItems();
-            lst.add($t1.f);
+            lst.add(0, $t1.f);
             $p = new X3Program(lst); } 
         | i1=interfaze p1=program
             { List<X3ToplevelItem> lst = $p1.p.getToplevelItems();
-            lst.add($i1.i);
+            lst.add(0, $i1.i);
             $p = new X3Program(lst); } 
         | c1=clazz p1=program 
             { List<X3ToplevelItem> lst = $p1.p.getToplevelItems();
-            lst.add($c1.c);
+            lst.add(0, $c1.c);
             $p = new X3Program(lst); } 
         ; 
 

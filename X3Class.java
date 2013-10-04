@@ -41,7 +41,9 @@ public class X3Class extends X3ToplevelItem {
 
   public void tokenize(StringBuilder b) {
     b.append("class ");
-    name.tokenize(b);
+    // if we call name.tokenize we get an extra < > pair
+    b.append(name.getName());
+    b.append(" ");
     Utils.tokenizeAngleList(b, typeParameters);
     constructorArguments.tokenize(b);
     b.append("extends ");

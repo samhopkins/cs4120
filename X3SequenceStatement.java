@@ -20,10 +20,14 @@ public class X3SequenceStatement extends X3Statement {
   }
 
   public void tokenize(StringBuilder b) {
-    b.append("{ ");
+    if (statements.size() != 1) {
+      b.append("{ ");
+    }
     for (X3Statement stmt : statements) {
       stmt.tokenize(b);
     }
-    b.append("} ");
+    if (statements.size() != 1) {
+      b.append("} ");
+    }
   }
 }

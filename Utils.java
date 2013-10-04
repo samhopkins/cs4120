@@ -16,8 +16,9 @@ public class Utils {
     if (elts.size() > 0) {
       elts.get(0).tokenize(b);
       for (int i = 1; i < elts.size(); i++) {
+        System.out.println("tokenizing an element in a list ");
         b.append(", ");
-        elts.get(1).tokenize(b);
+        elts.get(i).tokenize(b);
       }
     }
     b.append(close);

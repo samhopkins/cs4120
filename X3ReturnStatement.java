@@ -15,5 +15,6 @@ public class X3ReturnStatement extends X3Statement {
   public void tokenize(StringBuilder b) {
     b.append("return ");
     toReturn.tokenize(b);
+    b.append("; ");
   }
 }

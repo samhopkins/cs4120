@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.StringBuilder;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
@@ -17,8 +18,13 @@ public class X3Compiler {
       X3Parser parser = new X3Parser(tokens);
       X3Program treeRoot = parser.input().p;
       
-      ASTPrinter printer = new ASTPrinter();
-      treeRoot.accept(printer);
+      StringBuilder builder = new StringBuilder();
+      treeRoot.tokenize(builder);
+      String output = builder.toString();
+      output = output.substring(0, output.length() - 1); // strip whitespace
+
+      System.out.print(output);
+      
     } catch (IOException e) {
       System.out.println("file could not be opened");
     }

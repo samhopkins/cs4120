@@ -29,7 +29,9 @@ public class X3Interface extends X3ToplevelItem {
 
   public void tokenize(StringBuilder b) {
     b.append("interface ");
-    name.tokenize(b);
+    // if we call name.tokenize() we get an extra < > pair
+    b.append(name.getName()); 
+    b.append(" ");
     Utils.tokenizeAngleList(b, typeParameters);
     b.append("extends ");
     superType.tokenize(b);
