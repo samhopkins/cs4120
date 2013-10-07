@@ -20,7 +20,7 @@ public class X3WhileStatement extends X3Statement {
   }
 
   public void tokenize(StringBuilder b) {
-    b.append("while (");
+    b.append("while ( ");
     test.tokenize(b);
     b.append(") ");
     body.tokenize(b);
