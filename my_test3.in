@@ -1,0 +1,15 @@
+class Foo() extends Bar { 
+  fun baz(y : String) : String {
+    x := y;
+    {
+      z := y;
+      z := x;
+      {
+        x := z;
+        y := x;
+      }
+    }
+    return z;
+  }
+}
+return "hello world";

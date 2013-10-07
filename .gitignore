@@ -1,5 +1,5 @@
-X3Lexer.java
-X3Parser.java
+x3/X3Lexer.java
+x3/X3Parser.java
 *.tokens
 *.class
 *.swp
@@ -10,3 +10,5 @@ X3Parser.java
 *.pdf
 xi/*
 *.html
+scratch/*
+log.txt
