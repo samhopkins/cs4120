@@ -227,4 +227,28 @@ public class Utils {
 
     return character;
   }
+
+  static FunctionContext getInitialFunctionContext() {
+    KindContext emptyk = new KindContext();
+    TypeContext emptyc = new TypeContext();
+    FunctionContext init = new FunctionContext();
+
+
+    TypeContext characterc = emptyc.add(new Name("unicode"), getIntegerType());
+    FunctionScheme character = new FunctionScheme(new Name("charater"), emptyk, characterc, getCharacterType());
+
+    TypeContext stringc = emptyc.add(new Name("characters"), getIterableType(getCharacterType()));
+    FunctionScheme string = new FunctionScheme(new Name("string"), emptyk, stringc, getStringType());
+
+    init = init.add(character);
+    init = init.add(string);
+
+    return init;
+  }
+
+  static TypeContext getInitialVariableContext() {
+    TypeContext init = new TypeContext();
+    init = init.add(new Name("input"), getIterableType(getStringType()));
+    return init;
+  }
 }
