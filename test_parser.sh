@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TESTS="/Users/samhop/compilers/repo/trunk/2013fa/project/pa2/grading/*.in"
+TESTS="../repo/trunk/2013fa/project/pa2/grading/*.in"
 
 for t in $TESTS
 do

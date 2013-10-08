@@ -68,7 +68,7 @@ constructor_call returns [X3ConstructorCallExpression c]
                    t=TNAME (tlst=tau_lst { typeArgs = $tlst.lst ;})? 
                    elst=expr_lst 
                    { $c = new X3ConstructorCallExpression(new
-                     X3TypeName($t.text, typeArgs), typeArgs, $elst.lst); }
+                     X3TypeName($t.text, typeArgs), $elst.lst); }
                  ;
 
 list_literal returns [X3ListExpression l]
@@ -274,7 +274,7 @@ interface_impl returns [List<X3Method> lst]
                ;
 
 toplevel_fun returns [X3ToplevelFunction f]
-             : FUN v=VNAME sig=sigma st=stmt SEMICOLON 
+             : FUN v=VNAME sig=sigma st=stmt
                { $f = new X3ToplevelFunction(new X3Variable($v.text), $sig.s,
                  $st.s); }
              ;

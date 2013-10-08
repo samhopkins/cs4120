@@ -73,3 +73,6 @@ VNAME : [a-z] [A-Za-z0-9\_]* ;
 
 // Whitespace
 WS : [ \t\n\r] -> skip ;
+
+// HACK HACK HACK HACK HACK
+ERRORCHAR : . ;
