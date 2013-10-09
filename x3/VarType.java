@@ -5,7 +5,15 @@ class VarType extends Type {
   String v;
 
   boolean isSubtypeOf(Type other, ClassContext cctxt, KindContext kctxt) {
-    return (this.equals(other) || (other instanceof TopType));
+    boolean toReturn = false;
+    toReturn = toReturn || this.equals(other);
+    toReturn = toReturn || (other instanceof TopType);
+    if (other instanceof IntersectionType) {
+      IntersectionType otheri = (IntersectionType) other;
+      toReturn = toReturn || ( this.isSubtypeOf(other.t1, cctxt, kctxt) 
+          && this.isSubtypeOf(other.t2, ctxt, ktxt));
+    }
+    return toReturn;
   }
 
   Type getConstructibleComponent() throws NoConstructibleComponentException {
