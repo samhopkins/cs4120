@@ -16,4 +16,10 @@ class KindContext {
 
     return toReturn;
   }
+
+  boolean contains(VarType v) {
+    return vars.contains(v);
+  }
+
+  int size() { return vars.size(); }
 }

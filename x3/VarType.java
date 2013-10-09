@@ -43,4 +43,11 @@ class VarType extends Type {
     }
   }
 
+  boolean isValid(ClassContext cctxt, KindContext kctxt) {
+    return kctxt.vars.contains(this);
+  }
+
+  Type isValidConstructible(ClassContext cctxt, KindContext kctxt) {
+    return null;
+  }
 }

@@ -13,4 +13,12 @@ class TopType extends Type {
     return new TopType();
   }
 
+  boolean isValid(ClassContext cctxt, KindContext kctxt) {
+    return true;
+  }
+
+  Type isValidConstructible(ClassContext cctxt, KindContext kctxt) {
+    return new TopType();
+  }
+
 }

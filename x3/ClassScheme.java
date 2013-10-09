@@ -19,4 +19,8 @@ class ClassScheme {
     this.methods = new ArrayList<FunctionScheme>(methods);
   }
 
+  boolean matches(NamedType t) {
+    return t.name.equals(name.name);
+  }
+
 }

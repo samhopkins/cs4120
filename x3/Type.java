@@ -12,4 +12,7 @@ abstract class Type {
 
   abstract Type substitute(List<Type> types, KindContext vars);
 
+  abstract boolean isValid(ClassContext cctxt, KindContext kctxt);
+  abstract Type isValidConstructible(ClassContext cctxt, KindContext kctxt);
+
 }

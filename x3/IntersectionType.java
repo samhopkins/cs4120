@@ -20,5 +20,7 @@ class IntersectionType extends Type {
   Type substitute(List<Type> types, KindContext vars) {
     return new IntersectionType(t1.substitute(types, vars), t2.substitute(types, vars));
   }
+
+
 }
 

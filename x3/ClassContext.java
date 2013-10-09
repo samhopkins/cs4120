@@ -9,7 +9,20 @@ class ClassContext {
     classes = new ArrayList<ClassScheme>();
   }
 
-  public ClassContext addClassScheme(ClassScheme s) {
+  ClassScheme getScheme(NamedType t) throws NoSuchTypeException {
+    for(ClassScheme scheme : classes) {
+      if scheme.matches(t) { return scheme; }
+    }
+    return null;
+  }
+
+  public ClassContext addClassScheme(ClassScheme s) throws NoSuchTypeException {
+    // no name hiding
+    for (ClassScheme s' : classes) {
+      if (s'.name.equals(s.name)) {
+        throw new NoSuchTypeException();
+      }
+    }
     ClassContext toReturn = new ClassContext();
     toReturn.classes = new ArrayList<ClassScheme>(classes);
     toReturn.classes.add(s);
@@ -35,5 +48,4 @@ class ClassContext {
     // looked-up types should always be in context
     throw new NoSuchTypeException();
   }
-
 }

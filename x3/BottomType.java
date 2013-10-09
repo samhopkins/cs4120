@@ -11,4 +11,12 @@ class BottomType extends Type {
 
   Type substitute(List<Type> types, KindContext vars) { return new BottomType(); }
 
+  boolean isValid(ClassContext cctxt, KindContext kctxt) {
+    return true;
+  }
+
+  Type isValidConstructible(ClassContext cctxt, KindContext kctxt) {
+    return null;
+  }
+
 }

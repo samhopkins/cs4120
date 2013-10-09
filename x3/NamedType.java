@@ -71,4 +71,23 @@ class NamedType extends Type {
     }
     return new NamedType(this.name, newParams);
   }
+
+  Type isValidConstructible(ClassContext cctxt, KindContext kctxt) throws
+      NoSuchTypeException {
+    ClassScheme scheme = cctxt.getScheme(this);
+    if (scheme == null) { return null; }
+    for (Type param : parameters) {
+      if (!(param.isValid(cctxt, kctxt))) { return null; }
+    }
+    if (parameters.size() != scheme.kinds.size()) { return null; }
+    if (scheme.isInterface()) { return new TopType(); }
+    else { return this; }
+  }
+
+  boolean isValid(ClassContext cctxt, KindContext kctxt) throws
+      NoSuchTypeException {
+    Type res = this.isValidConstructible(cctxt, kctxt);
+    if (res == null) { return false; }
+    else { return true; }
+  }
 }
