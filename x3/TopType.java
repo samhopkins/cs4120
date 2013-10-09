@@ -1,4 +1,5 @@
 package x3;
+import java.util.*;
 
 class TopType extends Type {
 
@@ -6,6 +7,10 @@ class TopType extends Type {
 
   Type getConstructibleComponent() throws UnimplementedException {
     throw new UnimplementedException();
+  }
+
+  Type substitute(List<Type> types, KindContext vars) {
+    return new TopType();
   }
 
 }

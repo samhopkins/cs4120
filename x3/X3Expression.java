@@ -1,14 +1,16 @@
 package x3;
 
 public abstract class X3Expression extends ASTNode {
-  private X3Type mType;
+  private Type type;
 
-  public final X3Type getType(X3Context context) throws NoSuchTypeException {
-    if (mType == null) {
-      mType = this.calculateType(context);
+  /*
+  public final Type getType(X3Context context) throws NoSuchTypeException {
+    if (type == null) {
+      type = this.calculateType(context);
     }
-    return mType;
+    return type;
   }
+  */
 
-  protected abstract X3Type calculateType(X3Context context) throws NoSuchTypeException ;
+//  protected abstract Type calculateType(X3Context context) throws NoSuchTypeException ;
 }

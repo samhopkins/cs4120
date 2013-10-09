@@ -1,4 +1,5 @@
 package x3;
+import java.util.*;
 
 class VarType extends Type {
 
@@ -10,8 +11,8 @@ class VarType extends Type {
     toReturn = toReturn || (other instanceof TopType);
     if (other instanceof IntersectionType) {
       IntersectionType otheri = (IntersectionType) other;
-      toReturn = toReturn || ( this.isSubtypeOf(other.t1, cctxt, kctxt) 
-          && this.isSubtypeOf(other.t2, ctxt, ktxt));
+      toReturn = toReturn || ( this.isSubtypeOf(otheri.t1, cctxt, kctxt) 
+          && this.isSubtypeOf(otheri.t2, cctxt, kctxt));
     }
     return toReturn;
   }
@@ -31,6 +32,14 @@ class VarType extends Type {
       return false;
     } else {
       return v.equals(((VarType) other).v);
+    }
+  }
+
+  Type substitute (List<Type> types, KindContext vars) {
+    int index = vars.vars.indexOf(this);
+    if (index < 0) { return this; }
+    else {
+      return types.get(index);
     }
   }
 

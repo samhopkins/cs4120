@@ -5,41 +5,53 @@ class NamedType extends Type {
   String name;
   List<Type> parameters;
 
-  boolean isSubtypeOf(Type other, ClassContext cctxt, KindContext kctxt) throws UnimplementedException {
-    if (this.name.equals("Iterable")) {
-      return this.checkIterableSubtype(other, cctxt, kctxt);
+  NamedType(String name, List<Type> params) {
+    this.name = name;
+    this.parameters = new ArrayList<Type>(params);
+  }
+
+  boolean checkIterableSubtype(NamedType other, ClassContext cctxt, KindContext kctxt) 
+      throws NoSuchTypeException {
+    return this.parameters.get(0).isSubtypeOf(other.parameters.get(0), cctxt, kctxt);
+  }
+
+  boolean isSubtypeOf(Type other, ClassContext cctxt, KindContext kctxt) 
+      throws NoSuchTypeException {
+    if (other instanceof TopType) {
+      return true;
     } else if (other instanceof IntersectionType) {
       IntersectionType otheri = (IntersectionType) other;
-      return ( this.isSubtypeOf(other.t1, cctxt, kctxt) &&
-          this.isSubtypeOf(other.t2, ctxt, ktxt));
+      return ( this.isSubtypeOf(otheri.t1, cctxt, kctxt) &&
+          this.isSubtypeOf(otheri.t2, cctxt, kctxt));
     } else if (other instanceof NamedType) {
       NamedType othern = (NamedType) other;
-      if (other.name.equals(this.name)) {
-        // can assume here that this.parameters and other.parameters have same length
-        // since we should have already done some type validation
-        for (int i = 0; i < parameters.size(); i++) {
-          if (!(
-              parameters.get(i).isSubtypeOf(other.parameters.get(i))
-              && other.parameters.get(i).isSubtypeOf(parameters.get(i)))) {
-            return false;
+      if (othern.name.equals(this.name)) {
+        if (this.name.equals("Iterable")) {
+          return this.checkIterableSubtype(othern, cctxt, kctxt);
+        } else {
+          // can assume here that this.parameters and other.parameters have same length
+          // since we should have already done some type validation
+          for (int i = 0; i < parameters.size(); i++) {
+            if (!(
+                parameters.get(i).isSubtypeOf(othern.parameters.get(i), cctxt, kctxt)
+                && othern.parameters.get(i).isSubtypeOf(parameters.get(i), cctxt, kctxt))) {
+              return false;
+            }
           }
+          return true;
         }
-        return true;
       } else {
         Type declaredSuper = cctxt.getDeclaredSuper(this);
-        // do the right substitution into variables of declaredSuper
-        // check declaredSuper <: other
+        KindContext myKindDecl = cctxt.getKindDecl(this);
+        Type substituted = declaredSuper.substitute(this.parameters, myKindDecl);
+        return substituted.isSubtypeOf(othern, cctxt, kctxt);
       }
     }
+    return false;
   }
 
   Type getConstructibleComponent() throws UnimplementedException {
     throw new UnimplementedException();
-  }
-
-  NamedType(String s, List<Type> params) {
-    name = s;
-    parameters = new ArrayList<Type>(params);
   }
 
   public boolean equals(Object other) {
@@ -50,5 +62,13 @@ class NamedType extends Type {
       NamedType otherT = (NamedType) other;
       return (name.equals(otherT.name) && parameters.equals(otherT.parameters));
     }
+  }
+
+  Type substitute(List<Type> types, KindContext vars) {
+    List<Type> newParams = new ArrayList<Type>();
+    for (Type t : parameters) {
+      newParams.add(t.substitute(types, vars));
+    }
+    return new NamedType(this.name, newParams);
   }
 }
