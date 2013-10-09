@@ -1,0 +1,14 @@
+algorithm
+---------
+
+TODO: fill this out
+
+
+implementation
+--------------
+kind context can be list of type vars
+type context can be a map
+function context, class context can be lists but will need special
+implementations of class, interface, function for typechecking (maybe?)
+
+then need to add base context
