@@ -50,4 +50,8 @@ class VarType extends Type {
   Type isValidConstructible(ClassContext cctxt, KindContext kctxt) {
     return null;
   }
+
+  Type join(Type other, ClassContext cctxt, KindContext kctxt) {
+    return new TopType();
+  }
 }

@@ -19,4 +19,5 @@ class BottomType extends Type {
     return null;
   }
 
+  Type join(Type other, ClassContext cctxt, KindContext kctxt) { return other; }
 }

@@ -21,4 +21,6 @@ class TopType extends Type {
     return new TopType();
   }
 
+  Type join(Type other, ClassContext cctxt, KindContext kctxt) { return this; }
+
 }

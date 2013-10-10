@@ -251,4 +251,17 @@ public class Utils {
     init = init.add(new Name("input"), getIterableType(getStringType()));
     return init;
   }
+
+  static boolean isTopLike(Type t) {
+    boolean isTop = (t instanceof TopType);
+    boolean isIntersection = (t instanceof IntersectionType);
+    boolean collapses = false;
+    if (isIntersection) {
+      IntersectionType ti = (IntersectionType) t;
+      collapses = ti.collapsesToTop();
+    }
+    return isTop || collapses;
+  }
+
+    
 }

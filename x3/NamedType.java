@@ -90,4 +90,28 @@ class NamedType extends Type {
     if (res == null) { return false; }
     else { return true; }
   }
+
+  Type join(Type other, ClassContext cctxt, KindContext kctxt) {
+    if (other instanceof TopType) {
+      return other;
+    } else if (other instanceof BottomType) {
+      return this;
+    } else if (other instanceof VarType) {
+      return new TopType();
+    } else if (other instanceof IntersectionType) {
+      return other.join(this, cctxt, kctxt);
+    } else {
+      if (other.isSubtypeOf(this, cctxt, kctxt)) {
+        return this;
+      } else if (this.isSubtypeOf(other, cctxt, kctxt)) {
+        return other;
+      }
+      Type myDeclaredSuper = cctxt.getDeclaredSuper(this);
+      if (myDeclaredSuper instanceof TopType) {
+        return new TopType();
+      }
+      return myDeclaredSuper.join(other, cctxt, kctxt);
+    }
+  }
+
 }

@@ -15,4 +15,6 @@ abstract class Type {
   abstract boolean isValid(ClassContext cctxt, KindContext kctxt);
   abstract Type isValidConstructible(ClassContext cctxt, KindContext kctxt);
 
+  abstract Type join(Type other, ClassContext cctxt, KindContext kctxt);
+
 }
