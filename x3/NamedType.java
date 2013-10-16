@@ -105,6 +105,18 @@ class NamedType extends Type {
         return this;
       } else if (this.isSubtypeOf(other, cctxt, kctxt)) {
         return other;
+      } else {
+        NamedType othern = (NamedType) other;
+        if (this.name.equals("Iterable") && other.name.equals("Iterable")) {
+          ArrayList<Type> newList = new ArrayList<Type>();
+          newList.add(parameters.get(0).join(other.parameters.get(0)));
+          return new NamedType("Iterable", newList);
+        }
+        Type myDeclaredSuper = cctxt.getDeclaredSuper(this);
+        if (myDeclaredSuper instanceof TopType) {
+          return new TopType();
+        }
+        return myDeclaredSuper.join(other, cctxt, kctxt);
       }
       Type myDeclaredSuper = cctxt.getDeclaredSuper(this);
       ClassScheme myScheme = cctxt.getScheme(this);
@@ -115,5 +127,4 @@ class NamedType extends Type {
       return myDeclaredSuper.join(other, cctxt, kctxt);
     }
   }
-
 }
