@@ -39,7 +39,7 @@ public class X3Compiler {
       Utils.log("starting to flatten");
       treeRoot.accept(flattener);
       Utils.log("flattening done");
-      
+
       StringBuilder builder = new StringBuilder();
       treeRoot.tokenize(builder);
       String output = builder.toString();

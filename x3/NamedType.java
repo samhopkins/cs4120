@@ -107,6 +107,8 @@ class NamedType extends Type {
         return other;
       }
       Type myDeclaredSuper = cctxt.getDeclaredSuper(this);
+      ClassScheme myScheme = cctxt.getScheme(this);
+      myDeclaredSuper = myDeclaredSuper.substitute(parameters, myScheme.kinds);
       if (myDeclaredSuper instanceof TopType) {
         return new TopType();
       }
